@@ -334,7 +334,6 @@ var onProgress = function(callback){
 	},1000);
 }
 
-/*
 end_called = false;
 var onEnd = function(callback){
 	setInterval(function(){
@@ -344,7 +343,6 @@ var onEnd = function(callback){
 		}
 	},1000);
 }
-*/
 
 var open = function (path, options) {
 	var settings = options || {};
@@ -654,3 +652,4 @@ module.exports.getCurrentDuration = getCurrentDuration;
 module.exports.getCurrentVolume = getCurrentVolume;
 module.exports.getCurrentStatus = getCurrentStatus;
 module.exports.onProgress = onProgress;
+module.exports.onEnd = onEnd;
