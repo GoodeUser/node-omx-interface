@@ -3,7 +3,7 @@ var path = require('path');
 
 exec('mkfifo omxpipe');
 
-var defaults, progressHandler;
+var defaults, progressHandler, endHanlder;
 
 function setDefault ()	{
 	defaults = {
@@ -100,6 +100,10 @@ var stop = function() {
 		} else {
 			stopTryCount = 0;
 			cache = defaults;
+
+            if (endHanlder) {
+                endHanlder();
+            }
 		}
 	});
 	checkProgressHandler();
@@ -117,6 +121,10 @@ var quit = function() {
 		} else {
 			quitTryCount = 0;
 			cache = defaults;
+            
+            if (endHanlder) {
+                endHanlder();
+            }
 		}
   });
 }
@@ -326,23 +334,24 @@ var getCurrentVolume = function(){
 }
 
 var onProgress = function(callback){
-    console.log('cache', JSON.stringify(cache));
-	console.log('add new progress handler')
 	progressHandler = setInterval(function(){
+        var position = getCurrentPosition();
+        var duration = getCurrentDuration();
+        var isEnded = position > 0 && duration > 0 && position == duration;
+
+        if (isEnded && endHanlder) {
+            endHanlder();
+        }
+
 		if(getCurrentStatus()){
-			callback({position:getCurrentPosition(), duration:getCurrentDuration()});
+			callback({position: position, duration: duration});
 		}
 	},1000);
 }
 
 end_called = false;
 var onEnd = function(callback){
-	setInterval(function(){
-		if (cache.duration.valid && cache.position.value > cache.duration.value) {
-			callback();
-			end_called = true;
-		}
-	},1000);
+	endHanlder = callback;
 }
 
 var open = function (path, options) {
