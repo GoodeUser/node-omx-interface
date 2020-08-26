@@ -101,9 +101,9 @@ var stop = function() {
 			stopTryCount = 0;
 			cache = defaults;
 
-            if (endHanlder) {
-                endHanlder();
-            }
+			if (endHanlder) {
+				endHanlder();
+			}
 		}
 	});
 	checkProgressHandler();
@@ -121,10 +121,10 @@ var quit = function() {
 		} else {
 			quitTryCount = 0;
 			cache = defaults;
-            
-            if (endHanlder) {
-                endHanlder();
-            }
+			
+			if (endHanlder) {
+				endHanlder();
+			}
 		}
   });
 }
@@ -275,7 +275,7 @@ var update_status = function() {
 var update_duration = function() {
 	exec(dbus + 'getduration',function(error, stdout, stderr) {
 		if (error) return false;
-    	var duration = Math.round(Math.max(0,Math.round(parseInt(stdout.substring((stdout.indexOf("int64")>-1 ? stdout.indexOf("int64")+6:0)))/10000)/100));
+		var duration = Math.round(Math.max(0,Math.round(parseInt(stdout.substring((stdout.indexOf("int64")>-1 ? stdout.indexOf("int64")+6:0)))/10000)/100));
 		cache.duration.value = duration;
 		cache.duration.time = new Date();
 		cache.duration.valid = true;
@@ -285,7 +285,7 @@ var update_duration = function() {
 var update_volume = function() {
 	exec(dbus + 'getvolume',function(error, stdout, stderr) {
 		if (error) return false;
-    	var volume = parseFloat(stdout);
+		var volume = parseFloat(stdout);
 		cache.volume.value = volume;
 		cache.volume.time = new Date();
 		cache.volume.valid = true;
@@ -335,13 +335,13 @@ var getCurrentVolume = function(){
 
 var onProgress = function(callback){
 	progressHandler = setInterval(function(){
-        var position = getCurrentPosition();
-        var duration = getCurrentDuration();
-        var isEnded = position > 0 && duration > 0 && position == duration;
+		var position = getCurrentPosition();
+		var duration = getCurrentDuration();
+		var isEnded = position > 0 && duration > 0 && position == duration;
 
-        if (isEnded && endHanlder) {
-            endHanlder();
-        }
+		if (isEnded && endHanlder) {
+			endHanlder();
+		}
 
 		if(getCurrentStatus()){
 			callback({position: position, duration: duration});
